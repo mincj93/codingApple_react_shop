@@ -8,6 +8,9 @@ import data from './data';
 import Card from './Card';
 import {Routes, Route, Link, useNavigate, Outlet, useParams} from 'react-router-dom';
 import Detail from './routes/Detail';
+import axios from 'axios';
+
+let lg = console.log;
 
 function App() {
 
@@ -47,9 +50,27 @@ function App() {
               
             </div>
           </div>
+          <button onClick={()=>{
+            axios.get('https://codingapple1.github.io/shop/data2.json')
+              .then(( result )=>{ 
+                      console.log( result.data );
+                      // let newShoes = [...shoes];
+
+                      // result.data.map(function(result, idx){
+                      //   newShoes.push(result);
+                      // });
+                      // 한줄로 끝내는 방법
+                      // spread문법 쓰면 된다.
+                      let newShoes = [...shoes, ...result.data];
+                      setShoes(newShoes);
+              })
+              .catch(()=>{
+                      console.log('실패했을 때 출력');
+              });
+          }}>데이터요청AJAx</button>
           </>
         }/>
-        <Route path='/Detail/:id' element={<Detail shoes={shoes}/>}/>
+        <Route path='/Detail/:id' element={<Detail shoes={shoes}/>} />
         
 
         <Route path = "*" element={<div>존재하지 않는 페이지</div>}/>

@@ -6,7 +6,7 @@ import bg from './img/bg.png';
 import { useState } from 'react';
 import data from './data';
 import Card from './Card';
-import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom';
+import {Routes, Route, Link, useNavigate, Outlet, useParams} from 'react-router-dom';
 import Detail from './routes/Detail';
 
 function App() {
@@ -20,10 +20,10 @@ function App() {
 
       <Navbar bg='light' variant='light'>
         <Container>
-          <Navbar.Brand href="#home">ShoeShop</Navbar.Brand>
+          <Navbar.Brand onClick={() => { navigate('/')}}>ShoeShop</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={() => { navigate('/')}}>Home</Nav.Link>
-            <Nav.Link onClick={() => { navigate('detail')}}>Features</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/Detail/0')}}>Detail</Nav.Link>
             
           </Nav>
         </Container>
@@ -49,17 +49,8 @@ function App() {
           </div>
           </>
         }/>
-        <Route path='/detail' element={<Detail />}/>
+        <Route path='/Detail/:id' element={<Detail shoes={shoes}/>}/>
         
-        <Route path='/about' element={<About />}>
-          <Route path='member' element={<Member />}/>
-          <Route path='location' element={<Location />}/>
-        </Route>
-        
-        <Route path='/event' element={<Event />}>
-          <Route path='one' element={<One />}/>
-          <Route path='two' element={<Two />}/>
-        </Route>
 
         <Route path = "*" element={<div>존재하지 않는 페이지</div>}/>
       </Routes>
@@ -94,29 +85,5 @@ function Location() {
   )
 }
 
-function Event() {
-  return (
-    <div>
-      <h1>오늘의 이벤트</h1>
-      <Outlet></Outlet>
-    </div>
-  )
-}
-
-function One() {
-  return (
-    <div>
-      <h3>첫 주문시 양배추즙 서비스</h3>
-    </div>
-  )
-}
-
-function Two() {
-  return (
-    <div>
-      <h3>생일기념 쿠폰받기</h3>
-    </div>
-  )
-}
 
 export default App;

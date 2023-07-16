@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
+import { Nav, Tab } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { addItem } from "./../store";
 
 let lg = console.log;
 
@@ -17,17 +20,15 @@ let Box = styled.div`
 
 function Detail(props){
 
-    
-
-    
-
     let [count, setCount] = useState(0);
     let [alert, setAlert] = useState(true);
+    let [tab, setTab] = useState(0);
     
     let {id} = useParams(); // url 에 넣은 숫자
     let product = props.shoes.find(function(x){
         return x.id == id
     });
+    
 
 // 1. find()는 array 뒤에 붙일 수 있으며 return 조건식 적으면 됩니다. 그럼 조건식에 맞는 자료 남겨줌 
 
@@ -42,6 +43,8 @@ function Detail(props){
     //     setTimeout(() => {
     //         setAlert(false);}, 2000);
     // }, [count]);
+
+    let dispatch = useDispatch();
 
     useEffect(()=>{
         lg('이건 페이지 불려올때 딱 1번만 출력된다');
@@ -64,12 +67,42 @@ function Detail(props){
             <h4 className="pt-5">{product.title}</h4>
             <p>{product.content}</p>
             <p>{product.price}</p>
-            <button className="btn btn-danger">주문하기</button> 
+            <button className="btn btn-danger" onClick={()=>{
+                dispatch(addItem(product))
+            }}>주문하기</button> 
             </div>
         </div>
+        <Nav variant="tabs" defaultActiveKey="/home">
+              <Nav.Item>
+                <Nav.Link onClick={()=>setTab(0)} eventKey="/link0">버튼0</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link onClick={()=>setTab(1)} eventKey="/link1">버튼1</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link onClick={()=>setTab(2)} eventKey="/link2">버튼2</Nav.Link>
+              </Nav.Item>
+        </Nav>
+        
+        <TabContent tab={tab}/>
+
     </div> 
     );
 };
 
+
+function TabContent({tab}) {
+    if(tab == 0){
+        return <div>탭0 내용0</div>
+    }
+    
+    if(tab == 1){
+        return <div>탭1 내용1</div>
+    }
+    
+    if(tab == 2){
+        return <div>탭2 내용2</div>
+    }    
+}
 
 export default Detail;
